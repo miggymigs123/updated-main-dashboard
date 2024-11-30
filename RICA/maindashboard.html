@@ -1,0 +1,1120 @@
+<!-- /* <?php
+require 'pedia3xv2_DB.php';
+
+// Check connection
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+} 
+
+
+$sql = "SELECT COUNT(*) AS status_Overdue FROM VacRecord WHERE VacStatus = 'Overdue'";;
+$sql1 = "SELECT COUNT(*) AS status_Completed FROM VacRecord WHERE VacStatus = 'Completed'";;
+$sql2 = "SELECT COUNT(*) AS status_Conditional FROM VacRecord WHERE VacStatus = 'Conditional'";;
+$sql3 = "SELECT COUNT(*) AS status_Pending FROM VacRecord WHERE VacStatus = 'Pending'";; 
+
+// Execute the query
+$result = $connection->query($sql);
+$result1 = $connection->query($sql1);
+$result2 = $connection->query($sql2);
+$result3 = $connection->query($sql3);
+?> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="maindashboard.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 7px;
+            /* Change width as needed */
+        }
+
+        /* Track (the background of the scrollbar) */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            /* Change track color */
+        }
+
+        /* Handle (the draggable part of the scrollbar) */
+        ::-webkit-scrollbar-thumb {
+            background: #bbbbbb;
+            /* Change handle color */
+            border-radius: 6px;
+            /* Optional: round corners */
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #808080;
+            display: none;
+            /* Change handle color on hover */
+        }
+
+        body {
+            font-family: "Rubik", sans-serif;
+            background-color: #f5f8ff;
+            padding-top: 45px;
+        }
+
+        header {
+            color: black;
+            padding: 7px 15px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            position: fixed;
+            z-index: 1;
+        }
+
+        /* SIDE NAVIGATION */
+        #nav_bar {
+            height: auto;
+            box-shadow: 0px 0px 5px rgba(160, 160, 160, 0.5);
+            padding: 10px 20px 20px 20px;
+            background: #fff;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 300px;
+            height: 100vh;
+        }
+
+        #nav_bar,
+        header {
+            background-color: transparent !important;
+            box-shadow: none;
+            /* Optionally remove shadow for a cleaner look */
+        }
+
+        #nav-icon {
+            height: 24px;
+            width: 24px;
+        }
+
+        .nav-link {
+            align-items: center;
+            font-size: 1.08rem;
+            font-weight: 450;
+            padding: 5px 0px 5px 25px;
+            margin: 0px;
+        }
+
+        .nav-link img {
+            margin: 0px 5px 0px 0px;
+            /* Added space between icon and text */
+            height: 10px;
+        }
+
+        .nav-link a {
+            color: #3c3c3c;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: #e3dfec8f;
+            border-radius: 100px;
+        }
+
+        .nav-link.active,
+        .nav-link.active img {
+            background-color: #d4cce9;
+            border-radius: 100px;
+        }
+
+        .nav-link img {
+            margin-right: 5px;
+        }
+
+        .container-fluid {
+            margin: 0px;
+            color: #171717;
+        }
+
+        #user_profile_card {
+            background-color: #fff;
+            height: 80px;
+            border-radius: 10px;
+            align-items: center;
+            margin: 1px;
+            display: flex;
+            align-items: center;
+            padding: 0px;
+            box-shadow: 0px 0px 4px rgba(160, 160, 160, 0.5);
+        }
+
+        #user_profile_card img {
+            width: 55px;
+            height: 55px;
+            margin-right: none;
+        }
+
+        .barangay-name {
+            font-size: 1.17rem;
+            font-weight: bold;
+            white-space: nowrap;
+            padding: 0px;
+            transform: translateY(50%);
+        }
+
+        #brgy {
+            padding: 0px;
+        }
+
+        .account-status {
+            font-size: 1 rem;
+            white-space: nowrap;
+            padding-top: 5px;
+        }
+
+        #main {
+            position: fixed;
+            width: 73%;
+            margin-left: 320px;
+            margin-right: 40px;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 4px rgba(160, 160, 160, 0.5);
+            border-radius: 10px;
+            height: 89vh;
+            overflow-x: hidden;
+            padding: 40px 80px 0px 80px;
+        }
+
+        .list {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .status-card,
+        .btnStatus,
+        .status-icon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            box-shadow: 0px 0px 4px rgba(160, 160, 160, 0.5);
+            overflow: hidden;
+            height: 95px;
+            padding: 0px 0px;
+            border: none;
+            width: 220px;
+        }
+
+        .status-card {
+            background-color: #fff;
+        }
+
+        .btnStatus {
+            margin: 10px 0px;
+        }
+
+        .status-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .status-left {
+            width: 12px;
+            height: 100%;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .status-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            margin-right: 15px;
+            margin-left: 15px;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .status-icon.overdue {
+            color: #E55C5C;
+            background-color: #e55c5c29;
+            width: 80px;
+            margin-left: 0;
+        }
+
+        .status-left.overdue {
+            background-color: #E74C3C;
+        }
+
+        .status-icon.completed {
+            color: #5FA154;
+            background-color: #60a15426;
+            width: 80px;
+            margin-left: 0;
+        }
+
+        .status-left.completed {
+            background-color: #5FA154;
+        }
+
+        .status-icon.conditional {
+            color: #9574DC;
+            background-color: #9574dc29;
+            width: 80px;
+            margin-left: 0;
+        }
+
+        .status-left.conditional {
+            background-color: #8E44AD;
+        }
+
+        .status-icon.pending {
+            color: #E5865C;
+            background-color: #e5855c2a;
+            width: 80px;
+            margin-left: 0;
+        }
+
+        .status-left.pending {
+            background-color: #E67E22;
+        }
+
+        .status-text.overdue {
+            font-weight: 550;
+            color: #E55C5C;
+            font-size: 1.1rem;
+        }
+
+        .status-text.completed {
+            font-weight: 550;
+            color: #5FA154;
+            font-size: 1.1rem;
+        }
+
+        .status-text.conditional {
+            font-weight: 550;
+            color: #9574DC;
+            font-size: 1.1rem;
+        }
+
+        .status-text.pending {
+            font-weight: 550;
+            color: #E5865C;
+            font-size: 1.1rem;
+        }
+
+        .status-number {
+            font-size: 2rem;
+            font-weight: 550;
+            margin-right: 15px;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            margin-right: 5px;
+        }
+
+        .profile_label.row {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            height: 40px;
+            align-items: center;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        table th {
+            text-align: center;
+        }
+
+        .child_profile_card.row {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            height: 75px;
+            align-items: center;
+            text-align: center;
+            margin-top: 8px;
+            padding-bottom: 0;
+        }
+
+        footer {
+            background-color: #8F80D0;
+            color: white;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 2.5%
+        }
+    </style>
+</head>
+
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 10px;">
+    <div></div>
+
+    <!-- Notification and Dropdown Menu -->
+    <div style="display: flex; align-items: center; margin-right: 10px;">
+        <!-- Notification Button -->
+        <button type="button" class="btn" id="notificationButton" aria-label="Notifications"
+            style="background-color: #fff; border-radius: 100px; box-shadow: 0px 0px 5px rgba(160, 160, 160, 0.5); padding: 5px">
+            <img src="images/bell.png" alt="Notification" style="height: 23px; width: 23px;">
+        </button>
+
+        <div style="padding: 3px;"></div>
+        <!-- Dropdown Menu -->
+        <div class="dropdown">
+            <div style="position: relative; display: inline-block;">
+                <button class="btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style="background-color: #fff; border-radius: 100px; box-shadow: 0px 0px 5px rgba(160, 160, 160, 0.5); padding: 5px; position: relative;">
+                    <img src="images/ugac_sur.png" alt="Notification" style="height: 23px; width: 23px;">
+                    <!-- Toggle Arrow Icon -->
+                    <span class="toggle-icon"><img src="images/downarrow.png"
+                            style="height: 18px; width: 18px; background-color: #c8c8c8; padding: 0; border-radius: 100px;"></span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
+                    style="position: absolute; ">
+                    <li><a class="dropdown-item" href="profilemgmt.html">Manage Profiles</a></li>
+                    <li><a class="dropdown-item" href="programs.html">Immunization Programs</a></li>
+                    <li><a class="dropdown-item" href="maindashboard.html">Dashboard</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<body>
+    <script>
+        const calendarGrid = document.querySelector('.calendar-grid');
+        const monthSelector = document.getElementById('month-selector');
+        const yearSelector = document.getElementById('year-selector');
+        const prevButton = document.querySelector('.nav-button.prev');
+        const nextButton = document.querySelector('.nav-button.next');
+        let currentDate = new Date();
+
+        function populateYearOptions() {
+            const currentYear = new Date().getFullYear();
+            for (let year = currentYear - 10; year <= currentYear + 10; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (year === currentYear) {
+                    option.selected = true;
+                }
+                yearSelector.appendChild(option);
+            }
+        }
+
+        function updateCalendarGrid(year, month) {
+            calendarGrid.innerHTML = ''; // Clear the grid
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+
+            // Create blank days for the first week
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('calendar-day', 'empty');
+                calendarGrid.appendChild(emptyCell);
+            }
+
+            // Populate days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('calendar-day');
+                dayCell.textContent = day;
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        function updateCalendar() {
+            const selectedMonth = parseInt(monthSelector.value, 10);
+            const selectedYear = parseInt(yearSelector.value, 10);
+            updateCalendarGrid(selectedYear, selectedMonth);
+        }
+
+        function navigateMonth(step) {
+            currentDate.setMonth(currentDate.getMonth() + step);
+            monthSelector.value = currentDate.getMonth();
+            yearSelector.value = currentDate.getFullYear();
+            updateCalendar();
+        }
+
+        // Populate the year options
+        populateYearOptions();
+
+        // Initialize calendar grid
+        updateCalendarGrid(currentDate.getFullYear(), currentDate.getMonth());
+
+        // Event listeners for navigation and selection
+        monthSelector.addEventListener('change', updateCalendar);
+        yearSelector.addEventListener('change', updateCalendar);
+
+        prevButton.addEventListener('click', () => navigateMonth(-1));
+        nextButton.addEventListener('click', () => navigateMonth(1));
+
+        function toggleDescription(id) {
+            const desc = document.getElementById(id);
+            desc.classList.toggle('show');
+        }
+    </script>
+
+    <!--SIDE NAV-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-auto" id="nav_bar">
+                <!-- Logo on top of the user profile -->
+                <div class="logo-container">
+                    <img src="images/logo.png" alt="pedia3x" id="pedia3x" style="height: 40px;">
+                </div>
+
+                <!-- User profile card -->
+                <div class="row align-items-center" id="user_profile_card">
+                    <div class="col-auto">
+                        <img src="images/ugac_sur.png" width="55px" class="rounded-circle" alt="UGAC SUR">
+                    </div>
+                    <div class="col" id="brgy">
+                        <p class="barangay-name mb-0">BRGY. UGAC SUR</p>
+                        <p class="account-status">Account In Use</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- SIDE NAV BUTTONS -->
+
+                <div class="col">
+                    <ul class="list">
+                        <li class="nav-link mb-2">
+                            <img id="nav-icon" src="https://img.icons8.com/material-outlined/96/dashboard-layout.png"
+                                alt="dashboard-layout" />
+                            <a style="text-decoration: none;" href="maindashboard.html">&#160 Dashboard</a>
+                        </li>
+
+                        <li class="nav-link mb-2">
+                            <img id="nav-icon" src="https://img.icons8.com/material-outlined/96/syringe.png"
+                                alt="syringe" />
+                            <a style="text-decoration: none;" href="VaccineList.htmlhtml">&#160 List of Vaccines</a>
+                        </li>
+
+                        <li class="nav-link mb-2">
+                            <img id="nav-icon" src="https://img.icons8.com/material-outlined/96/admin-settings-male.png"
+                                alt="admin-settings-male" />
+                            <a style="text-decoration: none;" href="profile_mgmt.html">&#160 Manage Profiles</a>
+                        </li>
+
+                        <!-- <div class="form-btn">
+                            <input type="submit" value="Profile Management" name="Plogin" class="btn btn-primary" style="text-decoration: none; color: #3c3c3c;">
+                        </div> -->
+                        <li class="nav-link mb-2">
+                            <img id="nav-icon" src="https://img.icons8.com/material-outlined/96/group-of-projects.png"
+                                alt="group-of-projects" />
+                            <a style="text-decoration: none;" href="programs.html">&#160 Immunization Programs</a>
+                        </li>
+                    </ul>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const navLinks = document.querySelectorAll('.nav-link a');
+                            navLinks.forEach(link => {
+                                if (link.href === window.location.href) {
+                                    link.parentElement.classList.add('active'); // Adds "active" to the `li` element
+                                }
+                            });
+                        });
+
+                    </script>
+
+                    <hr>
+
+                    <section class="calendar-widget">
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <div class="month-selector" style="padding: 10px 0 10px 10px;">
+                                    <select id="month-selector">
+                                        <option value="" disabled selected>Month</option>
+                                        <option value="0">January</option>
+                                        <option value="1">February</option>
+                                        <option value="2">March</option>
+                                        <option value="3">April</option>
+                                        <option value="4">May</option>
+                                        <option value="5">June</option>
+                                        <option value="6">July</option>
+                                        <option value="7">August</option>
+                                        <option value="8">September</option>
+                                        <option value="9">October</option>
+                                        <option value="10">November</option>
+                                        <option value="11">December</option>
+                                    </select>
+                                </div>
+
+                                <div class="year-selector" style="padding: 10px 10px 10px 0px;">
+                                    <select id="year-selector">
+                                        <option value="" disabled selected>Year</option>
+                                    </select>
+                                </div>
+
+                                <div class="calendar-navigation">
+                                    <button class="nav-button prev" aria-label="Previous Month"><img
+                                            src="images/arrowleft.png" alt="Previous Month" loading="lazy"
+                                            style="width: 23px; height: 23px; margin-left: 10px; margin-top:10px;"></button>
+                                    <button class="nav-button next" aria-label="Next Month"><img src="images/arrowright.png"
+                                            alt="Next Month" loading="lazy" style="width: 23px; height: 23px; margin-right: 10px; margin-top:10px;"></button>
+                                </div>
+                            </div>
+
+                            <div class="calendar-grid label">
+                                <div class="calendar-day">S</div>
+                                <div class="calendar-day">M</div>
+                                <div class="calendar-day">T</div>
+                                <div class="calendar-day">W</div>
+                                <div class="calendar-day">TH</div>
+                                <div class="calendar-day">F</div>
+                                <div class="calendar-day">S</div>
+                            </div>
+
+                            <div class="calendar-grid">
+                                <div class="calendar-day">1</div>
+                                <div class="calendar-day">2</div>
+                                <div class="calendar-day">3</div>
+                                <div class="calendar-day">4</div>
+                                <div class="calendar-day">5</div>
+                                <div class="calendar-day">6</div>
+                                <div class="calendar-day">7</div>
+                                <div class="calendar-day">8</div>
+                                <div class="calendar-day">9</div>
+                                <div class="calendar-day">10</div>
+                                <div class="calendar-day">11</div>
+                                <div class="calendar-day">12</div>
+                                <div class="calendar-day">13</div>
+                                <div class="calendar-day">14</div>
+                                <div class="calendar-day">15</div>
+                                <div class="calendar-day">16</div>
+                                <div class="calendar-day">17</div>
+                                <div class="calendar-day">18</div>
+                                <div class="calendar-day">19</div>
+                                <div class="calendar-day">20</div>
+                                <div class="calendar-day">21</div>
+                                <div class="calendar-day">22</div>
+                                <div class="calendar-day">23</div>
+                                <div class="calendar-day">24</div>
+                                <div class="calendar-day">25</div>
+                                <div class="calendar-day">26</div>
+                                <div class="calendar-day">27</div>
+                                <div class="calendar-day">28</div>
+                                <div class="calendar-day">29</div>
+                                <div class="calendar-day">30</div>
+                            </div>
+                        </div>
+
+                </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOR SORTING. REMOVE COMMENT IF NOT NEEDED
+
+    <script>
+        const sortIcon = document.getElementById('sort-icon');
+        let isAscending = true;
+
+        sortIcon.addEventListener('click', function () {
+            isAscending = !isAscending;
+            sortIcon.innerHTML = isAscending ? '<i class="bi bi-sort-up-alt"></i>' : '<i class="bi bi-sort-down-alt"></i>';
+            // Add sorting logic here
+        });
+
+    </script> 
+    
+    -->
+
+    <!--STATUS CARD-->
+    <div class="col" id="main">
+        <h2 style="font-size: large; font-weight: bold;">Barangay Immunization Compliance</h2>
+
+        <div class="row">
+            <!-- Overdue Card -->
+            <div class="col-md-3">
+                <button class="btnStatus">
+                    <div class="status-card">
+                        <div class="status-left overdue"></div>
+                        <div class="status-icon overdue">
+                            <img width="37" height="37" src="images/overdue.png" alt="important-time" />
+                        </div>
+                        <div class="status-content">
+                            <div class="status-number">
+                                <!-- <?php
+                                        if ($result->num_rows > 0) {
+                                            
+                                            $row = $result->fetch_assoc();
+                                            echo $row['status_Overdue']; 
+                                        } else {
+                                            echo "0"; 
+                                        }
+                                    ?> -->
+                            </div>
+                            <div class="status-text overdue">Overdue</div>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+
+            <!-- Completed Card -->
+            <div class="col-md-3">
+                <button class="btnStatus">
+                    <div class="status-card">
+                        <div class="status-left completed"></div>
+                        <div class="status-icon completed">
+                            <img width="37" height="37" src="images/completed.png" alt="checked--v1" />
+                        </div>
+                        <div class="status-content">
+                            <div class="status-number">
+                                <!-- <?php
+                                        if ($result1->num_rows > 0) {
+                                            
+                                            $row = $result1->fetch_assoc();
+                                            echo $row['status_Completed']; 
+                                        } else {
+                                            echo "0"; 
+                                        }
+                                    ?> -->
+                            </div>
+                            <div class="status-text completed">Completed</div>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Conditional Card -->
+            <div class="col-md-3">
+                <button class="btnStatus">
+                    <div class="status-card">
+                        <div class="status-left conditional"></div>
+                        <div class="status-icon conditional">
+                            <img width="37" height="37" src="images/conditional.png" alt="overtime">
+                        </div>
+                        <div class="status-content">
+                            <div class="status-number">
+                                <!-- <?php
+                                        if ($result2->num_rows > 0) {
+                                            
+                                            $row = $result2->fetch_assoc();
+                                            echo $row['status_Conditional']; 
+                                        } else {
+                                            echo "0"; 
+                                        }
+                                    ?> -->
+                            </div>
+                            <div class="status-text conditional">Conditional</div>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Pending Card -->
+            <div class="col-md-3">
+                <button class="btnStatus">
+                    <div class="status-card">
+                        <div class="status-left pending"></div>
+                        <div class="status-icon pending">
+                            <img width="37" height="37" src="images/pending.png" alt="data-pending" />
+                        </div>
+                        <div class="status-content">
+                            <div class="status-number">
+                                <!-- <?php
+                                        if ($result3->num_rows > 0) {
+                                            
+                                            $row = $result3->fetch_assoc();
+                                            echo $row['status_Pending']; 
+                                        } else {
+                                            echo "0"; 
+                                        }
+                                    ?> -->
+                            </div>
+                            <div class="status-text pending">Pending</div>
+                        </div>
+                    </div>
+            </div>
+            </button>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="row mt-4 mb-2 align-items-center" id="ch-info">
+            <div class="col-md-6">
+                <h2 style="font-size: large; font-weight: bold;">Children Information</h2>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by Child Name">
+                </div>
+            </div>
+        </div>
+
+        <!--PROFILE CARD HEADER-->
+        <div class="row profile_label">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-1" id="child_image"></th>
+                        <th class="col-4">Name</th>
+                        <th class="col-3">Home Address</th>
+                        <th class="col-1">Sex</th>
+                        <th class="col-2">Birthdate</th>
+                        <th class="col-1">Age</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <!--PROFILE CARD-->
+        <!-- <div class="modal fade" id="insertdata" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="insertdataLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="insertdataLabel">Insert Child Record</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="insert.php" method="POST">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="ChildName" class="form-label">Child Name:</label>
+                                    <input type="text" class="form-control" id="ChildName" placeholder="Enter Fullname"
+                                        name="ChildName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Address" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="Address" placeholder="Enter Address"
+                                        name="Address" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="BirthDate" class="form-label">Birthdate</label>
+                                    <input type="text" class="form-control" id="BirthDate" placeholder="Enter Birthdate"
+                                        name="Birthdate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Sex" class="form-label">Gender</label>
+                                    <input type="text" class="form-control" id="Sex" placeholder="Enter Gender"
+                                        name="Gender" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ParentName" class="form-label">Parent/Guardian Name</label>
+                                    <input type="text" class="form-control" id="ParentName"
+                                        placeholder="Enter Parent/Guardian Name" name="ParentName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="ContactNumber" class="form-label">Parent/Guardian Phone Number</label>
+                                    <input type="text" class="form-control" id="ContactNumber"
+                                        placeholder="Enter Phone Number" name="ContactNumber" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="MedicalNotes" class="form-label">Medical Notes</label>
+                                    <textarea class="form-control" id="MedicalNotes" rows="3"
+                                        placeholder="Enter Necessary Medical Notice" name="MedicalNotes"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" name="savedata">Save Record</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> -->
+
+        <div class="container mt-5">
+
+        </div>
+
+        <div class="row justify-content-center">
+            <!-- <?php
+        $connection = mysqli_connect("localhost", "root", "", "CRUDE");
+        $fetch_query = "SELECT * FROM ChildInfo";
+        $fetch_query_run = mysqli_query($connection, $fetch_query);
+
+        if (mysqli_num_rows($fetch_query_run) > 0) {
+            echo '<div class="accordion" id="childAccordion">';
+            $count = 0; // Counter for unique IDs
+            while ($accordion = mysqli_fetch_array($fetch_query_run)) {
+                $count++;
+                ?> -->
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading<?php echo $count; ?>">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse<?php echo $count; ?>" aria-expanded="true"
+                        aria-controls="collapse<?php echo $count; ?>">
+                        <div class="row_child_profile_card">
+                            <div class="col-1">
+                                <img src="images/sample.png" width="55px">
+                            </div>
+                            <div class="col-3 childName" style="padding-top: 14px; text-align: left;">
+                                <p>
+                                    <?php echo $accordion['ChildID']; ?>
+                                </p>
+                            </div>
+                            <div class="col-3 childName" style="padding-top: 14px; text-align: left;">
+                                <p>
+                                    <?php echo $accordion['ChildName']; ?>
+                                </p>
+                            </div>
+                            <div class="col-3" style="padding-top: 14px;">
+                                <p>
+                                    <?php echo $accordion['Address']; ?>
+                                </p>
+                            </div>
+                            <div class="col-1" style="padding-top: 14px;">
+                                <p>
+                                    <?php echo $accordion['Sex']; ?>
+                                </p>
+                            </div>
+                            <div class="col-2" style="padding-top: 14px;">
+                                <p>
+                                    <?php echo $accordion['Birthdate']; ?>
+                                </p>
+                            </div>
+                        </div>
+                    </button>
+                </h2>
+                <div id="collapse<?php echo $count; ?>" class="accordion-collapse collapse"
+                    aria-labelledby="heading<?php echo $count; ?>" data-bs-parent="#childAccordion">
+                    <div class="accordion-body">
+                        <button type="button" class="btn btn-primary view_data"
+                            data-id="<?php echo $accordion['ChildID']; ?>">View Record</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <?php
+            }
+            echo '</div>'; // Close accordion
+        } else {
+            echo "No records found.";
+        }
+
+        // Close the connection
+        mysqli_close($connection);
+        ?> -->
+
+            <div class="modal fade" id="recordModal" tabindex="-1" aria-labelledby="recordModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="recordModalLabel">Child Record</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="recordDetails"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Edit Child Record</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="editForm" action="update1.php" method="POST">
+                            <div class="modal-body">
+                                <input type="hidden" id="editChildID" name="ChildID">
+                                <div class="mb-3">
+                                    <label for="editChildName" class="form-label">Child Name:</label>
+                                    <input type="text" class="form-control" id="editChildName" name="ChildName"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editAddress" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="editAddress" name="Address" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editBirthDate" class="form-label">Birthdate</label>
+                                    <input type="date" class="form-control" id="editBirthDate" name="Birthdate"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editSex" class="form-label">Gender</label>
+                                    <input type="text" class="form-control" id="editSex" name="Gender" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editParentName" class="form-label">Parent/Guardian Name</label>
+                                    <input type="text" class="form-control" id="editParentName" name="ParentName"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editContactNumber" class="form-label">Parent/Guardian Phone
+                                        Number</label>
+                                    <input type="text" class="form-control" id="editContactNumber" name="ContactNumber"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editMedicalNotes" class="form-label">Medical Notes</label>
+                                    <textarea class="form-control" id="editMedicalNotes" name="MedicalNotes"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update Record</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <!-- <?php
+                                if (isset($_SESSION['status']) && $_SESSION['status'] != '') {
+                                    echo $_SESSION['status'];
+                                    ?> -->
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Hey!</strong>
+                                <?php echo $_SESSION['status']; ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                            <!-- <?php
+                                    unset($_SESSION['status']);
+                                }
+                                ?> -->
+
+                            <div class="card-body"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const searchValue = this.value.toLowerCase().trim();
+            const accordionItems = document.querySelectorAll('.accordion-item');
+
+            accordionItems.forEach(function (item) {
+                const childNameElements = item.querySelectorAll('.childName');  // Get all childName elements
+
+                let isVisible = false;
+                childNameElements.forEach((childNameElement) => {
+                    const childName = childNameElement.textContent.toLowerCase();
+
+                    // Check if any childName matches the search value
+                    if (childName.includes(searchValue)) {
+                        isVisible = true;
+                    }
+                });
+
+                item.style.display = isVisible ? '' : 'none';  // Show if any name matches
+            });
+        });
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.view_data').click(function () {
+                var child_id = $(this).data('id');
+                $.ajax({
+                    url: 'fetch_child.php',
+                    method: 'POST',
+                    data: { child_id: child_id },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status !== "error") {
+                            var details = `
+                        <p><strong>Child Name:</strong> ${data.ChildName}</p>
+                        <p><strong>Address:</strong> ${data.Address}</p>
+                        <p><strong>Birthdate:</strong> ${data.Birthdate}</p>
+                        <p><strong>Gender:</strong> ${data.Sex}</p>
+                        <p><strong>Parent/Guardian Name:</strong> ${data.ParentName}</p>
+                        <p><strong>Contact Number:</strong> ${data.ParentContactNumber}</p>
+                        <p><strong>Medical Notes:</strong> ${data.MedicalNotes}</p>
+                    `;
+                            $('#recordDetails').html(details);
+                            $('#recordModal').modal('show');
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred.");
+                    }
+                });
+            });
+
+            // Edit button click event
+            $('.edit_data').click(function () {
+                var childId = $(this).data('id');
+                var childName = $(this).data('name');
+                var address = $(this).data('address');
+                var birthdate = $(this).data('birthdate');
+                var gender = $(this).data('gender');
+                var parentName = $(this).data('parentname');
+                var contact = $(this).data('contact');
+                var medical = $(this).data('medical');
+
+                // Set the values in the edit modal
+                $('#editChildID').val(childId);
+                $('#editChildName').val(childName);
+                $('#editAddress').val(address);
+                $('#editBirthDate').val(birthdate);
+                $('#editSex').val(gender);
+                $('#editParentName').val(parentName);
+                $('#editContactNumber').val(contact);
+                $('#editMedicalNotes').val(medical);
+
+                // Show the edit modal
+                $('#editModal').modal('show');
+            });
+        });
+    </script>
+
+    <script>
+        function showPopup() {
+            const userResponse = confirm("Do you want to go to the login page?");
+
+            if (userResponse) {
+                window.location.href = "Profilemgmt_logout.php"; // Redirect to your login or profile management page
+                return false; // Prevents any other navigation if needed
+            }
+            return false; // Stops navigation if "No" is selected
+        }
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+<footer>
+    <p style="margin-left: 250px; font-size: smaller;">Empowering pediatrics, one click with PEDIA3X.</p>>
+
+</footer>
+
+</html>

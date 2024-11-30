@@ -1,0 +1,946 @@
+<!-- <?php include('insertvax.php'); ?> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="newVax.css">
+    <link rel="stylesheet" href="maindashboard.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script>
+        const pageTitle = document.title;
+        console.log(pageTitle);
+    </script>
+
+    <style>
+        /* Width of the scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+            /* Change width as needed */
+        }
+
+        /* Track (the background of the scrollbar) */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            /* Change track color */
+        }
+
+        /* Handle (the draggable part of the scrollbar) */
+        ::-webkit-scrollbar-thumb {
+            background: #bbbbbb;
+            /* Change handle color */
+            border-radius: 6px;
+            /* Optional: round corners */
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #808080;
+            display: none;
+            /* Change handle color on hover */
+        }
+
+        body {
+            font-family: "Rubik", sans-serif;
+            background-color: #f5f8ff;
+            padding-top: 45px;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background-color: #fff;
+            color: black;
+            padding: 7px 15px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            position: fixed;
+            z-index: 1;
+            box-shadow: 0px 0px 5px rgba(160, 160, 160, 0.5);
+            /* Shadow for depth */
+        }
+
+        #pedia3x {
+            height: 40px;
+            margin-bottom: 12px;
+        }
+
+        .container-fluid {
+            margin: 0px;
+            color: #171717;
+        }
+
+        #nav_bar {
+            height: auto;
+            box-shadow: 0px 0px 5px rgba(160, 160, 160, 0.5);
+            padding: 10px 20px 20px 20px;
+            background: #fff;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 300px;
+            height: 100vh;
+
+        }
+
+        #nav_bar,
+        header {
+            background-color: transparent !important;
+            box-shadow: none;
+            /* Optionally remove shadow for a cleaner look */
+        }
+
+        #user_profile_card {
+            background-color: #fff;
+            height: 80px;
+            border-radius: 10px;
+            align-items: center;
+            margin: 1px;
+            display: flex;
+            align-items: center;
+            padding: 0px;
+            box-shadow: 0px 0px 4px rgba(160, 160, 160, 0.5);
+        }
+
+        #user_profile_card img {
+            width: 55px;
+            height: 55px;
+            margin-right: none;
+        }
+
+        .barangay-name {
+            font-size: 1.17rem;
+            font-weight: bold;
+            white-space: nowrap;
+            padding: 0px;
+            transform: translateY(50%);
+        }
+
+        #brgy {
+            padding: 0px;
+        }
+
+        .account-status {
+            font-size: 1 rem;
+            white-space: nowrap;
+            padding-top: 5px;
+        }
+
+        #main {
+            position: fixed;
+            width: 73%;
+            margin-left: 320px;
+            margin-right: 40px;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 4px rgba(160, 160, 160, 0.5);
+            border-radius: 10px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 25px 0px 0px 80px;
+        }
+
+        .nav-link {
+            align-items: center;
+            font-size: 1.08rem;
+            font-weight: 450;
+            padding: 5px 0px 5px 25px;
+            margin: 0px;
+        }
+
+        .nav-link img {
+            margin: 0px 10px 0px 0px;
+            /* Added space between icon and text */
+            height: 10px;
+        }
+
+        .nav-link a {
+            color: #3c3c3c;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: #efeef1;
+            border-radius: 100px;
+        }   
+
+        .nav-link.active,
+        .nav-link.active img {
+            background-color: #e0dbeb;
+            border-radius: 100px;
+        }
+
+        .nav-link img {
+            margin-right: 8px;
+        }
+
+
+        .list {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .status-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* Ensures icon and text have space */
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 7px 0;
+            overflow: hidden;
+            /* Ensure the left strip is contained within the card */
+            height: 85px;
+            /* Adjust height as needed */
+        }
+
+        .status-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Centers content horizontally */
+            justify-content: center;
+            /* Centers content vertically */
+            text-align: center;
+            /* Centers text */
+            flex-grow: 1;
+        }
+
+        .status-left {
+            width: 12px;
+            height: 100%;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .status-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            margin-left: 15px;
+        }
+
+        .status-icon.overdue {
+            color: #E55C5C;
+            background-color: #e55c5c29;
+            height: 95px;
+            width: 80px;
+            margin-left: 0;
+        }
+
+        .status-left.overdue {
+            background-color: #E74C3C;
+        }
+
+        .status-icon.completed {
+            color: #5FA154;
+            background-color: #60a15426;
+            height: 95px;
+            width: 80px;
+            margin-left: 0;
+        }
+
+        .status-left.completed {
+            background-color: #5FA154;
+        }
+
+        .status-icon.conditional {
+            color: #9574DC;
+            background-color: #9574dc29;
+            height: 95px;
+            width: 80px;
+            margin-left: 0;
+        }
+
+        .status-left.conditional {
+            background-color: #8E44AD;
+        }
+
+        .status-icon.pending {
+            color: #E5865C;
+            background-color: #e5855c2a;
+            height: 95px;
+            width: 80px;
+            margin-left: 0;
+        }
+
+        .status-left.pending {
+            background-color: #E67E22;
+        }
+
+        .status-text.overdue {
+            font-weight: 550;
+            color: #E55C5C;
+            font-size: 1.1rem;
+        }
+
+        .status-text.completed {
+            font-weight: 550;
+            color: #5FA154;
+            font-size: 1.1rem;
+        }
+
+        .status-text.conditional {
+            font-weight: 550;
+            color: #9574DC;
+            font-size: 1.1rem;
+        }
+
+        .status-text.pending {
+            font-weight: 550;
+            color: #E5865C;
+            font-size: 1.1rem;
+        }
+
+        .status-number {
+            font-size: 2rem;
+            font-weight: 550;
+            margin-right: 15px;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            margin-right: 5px;
+        }
+
+        .profile_label.row {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            height: 37px;
+            align-items: center;
+            text-align: center;
+            padding-top: 6px;
+            margin-top: 15px;
+        }
+
+
+        footer {
+            background-color: #8F80D0;
+            color: white;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 2.5%
+        }
+    </style>
+</head>
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 10px;">
+    <div></div>
+
+    <!-- Notification and Dropdown Menu -->
+    <div style="display: flex; align-items: center; margin-right: 10px;">
+        <!-- Notification Button -->
+        <button type="button" class="btn" id="notificationButton" aria-label="Notifications"
+            style="margin-right: 10px; background-color: #fff; color: #9574DC; box-shadow: 0 4px 9px rgba(0, 0, 0, 0.1); border-radius: 200px;">
+            <i class="bi bi-bell"></i> <!-- Bootstrap bell icon -->
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-expanded="false" style="background-color: #9574DC; color: #fff; border-radius: 10px;">
+                <i class="bi bi-list" style="font-size: 1.2rem;"></i> <!-- Bootstrap hamburger icon -->
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
+                style="position: absolute; ">
+                <li><a class="dropdown-item" href="profilemgmt.html">Manage Profiles</a></li>
+                <li><a class="dropdown-item" href="programs.html">Immunization Programs</a></li>
+                <li><a class="dropdown-item" href="maindashboard.html">Dashboard</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<!-- Bootstrap Icons (for the bell icon) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
+
+<body>
+    <button class="add-button-floating" type="button" id="openModalBtn" data-bs-toggle="modal"
+        data-bs-target="#VaxModal">
+        <i class="bi bi-plus"></i> <!-- Bootstrap Plus Icon -->
+    </button>
+
+    <script>
+        const calendarGrid = document.querySelector('.calendar-grid');
+        const monthSelector = document.getElementById('month-selector');
+        const yearSelector = document.getElementById('year-selector');
+        const prevButton = document.querySelector('.nav-button.prev');
+        const nextButton = document.querySelector('.nav-button.next');
+        let currentDate = new Date();
+
+        function populateYearOptions() {
+            const currentYear = new Date().getFullYear();
+            for (let year = currentYear - 10; year <= currentYear + 10; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (year === currentYear) {
+                    option.selected = true;
+                }
+                yearSelector.appendChild(option);
+            }
+        }
+
+        function updateCalendarGrid(year, month) {
+            calendarGrid.innerHTML = ''; // Clear the grid
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+
+            // Create blank days for the first week
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('calendar-day', 'empty');
+                calendarGrid.appendChild(emptyCell);
+            }
+
+            // Populate days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('calendar-day');
+                dayCell.textContent = day;
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        function updateCalendar() {
+            const selectedMonth = parseInt(monthSelector.value, 10);
+            const selectedYear = parseInt(yearSelector.value, 10);
+            updateCalendarGrid(selectedYear, selectedMonth);
+        }
+
+        function navigateMonth(step) {
+            currentDate.setMonth(currentDate.getMonth() + step);
+            monthSelector.value = currentDate.getMonth();
+            yearSelector.value = currentDate.getFullYear();
+            updateCalendar();
+        }
+
+        // Populate the year options
+        populateYearOptions();
+
+        // Initialize calendar grid
+        updateCalendarGrid(currentDate.getFullYear(), currentDate.getMonth());
+
+        // Event listeners for navigation and selection
+        monthSelector.addEventListener('change', updateCalendar);
+        yearSelector.addEventListener('change', updateCalendar);
+
+        prevButton.addEventListener('click', () => navigateMonth(-1));
+        nextButton.addEventListener('click', () => navigateMonth(1));
+
+        function toggleDescription(id) {
+            const desc = document.getElementById(id);
+            desc.classList.toggle('show');
+        }
+    </script>
+
+    <!--SIDE NAV-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-auto" id="nav_bar">
+                <!-- Logo on top of the user profile -->
+                <div class="logo-container">
+                    <img src="images/logo.png" alt="pedia3x" id="pedia3x" style="height: 40px;">
+                </div>
+
+                <!-- User profile card -->
+                <div class="row align-items-center" id="user_profile_card">
+                    <div class="col-auto">
+                        <img src="images/ugac_sur.png" width="55px" class="rounded-circle" alt="UGAC SUR">
+                    </div>
+                    <div class="col" id="brgy">
+                        <p class="barangay-name mb-0">BRGY. UGAC SUR</p>
+                        <p class="account-status">Account In Use</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- SIDE NAV BUTTONS -->
+
+                <div class="col">
+                    <ul class="list">
+                        <li class="nav-link mb-2">
+                            <img id="nav-icon" src="https://img.icons8.com/material-outlined/96/dashboard-layout.png"
+                                alt="dashboard-layout" />
+                            <a style="text-decoration: none;" href="maindashboard.html">&#160 Dashboard</a>
+                        </li>
+
+                        <li class="nav-link mb-2">
+                            <img id="nav-icon" src="https://img.icons8.com/material-outlined/96/syringe.png"
+                                alt="syringe" />
+                            <a style="text-decoration: none;" href="newVax.html">&#160 List of Vaccines</a>
+                        </li>
+
+                        <li class="nav-link mb-2">
+                            <img id="nav-icon" src="https://img.icons8.com/material-outlined/96/admin-settings-male.png"
+                                alt="admin-settings-male" />
+                            <a style="text-decoration: none;" href="profile_mgmt.html">&#160 Manage Profiles</a>
+                        </li>
+
+                        <li class="nav-link mb-2">
+                            <img id="nav-icon" src="https://img.icons8.com/material-outlined/96/group-of-projects.png"
+                                alt="group-of-projects" />
+                            <a style="text-decoration: none;" href="programs.html">&#160 Immunization Programs</a>
+                        </li>
+                    </ul>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const navLinks = document.querySelectorAll('.nav-link a');
+                            navLinks.forEach(link => {
+                                if (link.href === window.location.href) {
+                                    link.parentElement.classList.add('active'); // Adds "active" to the `li` element
+                                }
+                            });
+                        });
+
+                    </script>
+
+                    <hr>
+
+                    <!-- CALENDAR -->
+                    <section class="calendar-widget">
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <div class="month-selector">
+                                    <select id="month-selector">
+                                        <option value="0">January</option>
+                                        <option value="1">February</option>
+                                        <option value="2">March</option>
+                                        <option value="3">April</option>
+                                        <option value="4">May</option>
+                                        <option value="5">June</option>
+                                        <option value="6">July</option>
+                                        <option value="7">August</option>
+                                        <option value="8">September</option>
+                                        <option value="9">October</option>
+                                        <option value="10">November</option>
+                                        <option value="11">December</option>
+                                    </select>
+                                </div>
+                                <div class="year-selector">
+                                    <select id="year-selector"></select>
+                                </div>
+                            </div>
+                            <div class="calendar-navigation">
+                                <button class="nav-button prev" aria-label="Previous Month"><i
+                                        class="bi bi-chevron-left" loading="lazy" style="font-size: 15px;"></i></button>
+                                <button class="nav-button next" aria-label="Next Month"><i class="bi bi-chevron-right"
+                                        loading="lazy" style="font-size: 15px;"></i></button>
+                            </div>
+                            <div class="calendar-grid">
+                                <div class="calendar-day">1</div>
+                                <div class="calendar-day">2</div>
+                                <div class="calendar-day">3</div>
+                                <div class="calendar-day">4</div>
+                                <div class="calendar-day">5</div>
+                                <div class="calendar-day">6</div>
+                                <div class="calendar-day">7</div>
+                                <div class="calendar-day">8</div>
+                                <div class="calendar-day">9</div>
+                                <div class="calendar-day">10</div>
+                                <div class="calendar-day">11</div>
+                                <div class="calendar-day">12</div>
+                                <div class="calendar-day">13</div>
+                                <div class="calendar-day">14</div>
+                                <div class="calendar-day">15</div>
+                                <div class="calendar-day">16</div>
+                                <div class="calendar-day">17</div>
+                                <div class="calendar-day">18</div>
+                                <div class="calendar-day">19</div>
+                                <div class="calendar-day">20</div>
+                                <div class="calendar-day">21</div>
+                                <div class="calendar-day">22</div>
+                                <div class="calendar-day">23</div>
+                                <div class="calendar-day">24</div>
+                                <div class="calendar-day">25</div>
+                                <div class="calendar-day">26</div>
+                                <div class="calendar-day">27</div>
+                                <div class="calendar-day">28</div>
+                                <div class="calendar-day">29</div>
+                                <div class="calendar-day">30</div>
+                            </div>
+                        </div>
+                </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- vaccine-list-section -->
+
+        <!-- search bar & js -->
+        <div class="vaccineWrapper">
+            <div class="row align-items-center" id="vaxheader">
+                <div class="col-md-4" id="page-title">
+                    <div>
+                        <h2 style="font-size: medium; font-weight: bold; color: #313131; transform: translateY(50%);">
+                            List of Vaccines</h2>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div>
+
+                    </div>
+                </div>
+
+                <div class="search-bar col-md-3 d-flex align-items-center">
+                    <span class="input-icon">
+                        <a href="#" class="icon-link">
+                            <img width="20" height="20" src="https://img.icons8.com/material-outlined/96/search.png"
+                                alt="search icon" />
+                        </a>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search for a vaccine..." aria-label="Search"
+                        id="search-input">
+                    <span class="clear-icon">
+                        <a href="#" class="icon-link" id="clear-icon" onclick="clearSearch()">
+                            <img width="20" height="20" src="https://img.icons8.com/material-outlined/96/multiply.png"
+                                alt="clear icon" />
+                        </a>
+                    </span>
+                </div>
+
+                <div class="col-md-1">
+                    <span class="sort-icon ms-2">
+                        <a href="#" class="icon-link" id="sort-icon">
+                            <i class="bi bi-sort-up-alt" style="font-size: 1.2rem;"></i>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- for clearing search -->
+        <script>
+            function clearSearch() {
+                document.getElementById('search-input').value = ''; // Clear input field
+                document.getElementById('search-input').focus(); // Refocus the input
+            }
+        </script>
+
+        <!-- for sorting -->
+        <script>
+            const sortIcon = document.getElementById('sort-icon');
+            let isAscending = true;
+
+            sortIcon.addEventListener('click', function () {
+                isAscending = !isAscending;
+                sortIcon.innerHTML = isAscending ? '<i class="bi bi-sort-up-alt"></i>' : '<i class="bi bi-sort-down-alt"></i>';
+                // Add sorting logic here
+            });
+
+        </script>
+
+        <!--STATUS CARD-->
+        <div class="col" id="main">
+            <!-- Modal Structure -->
+            <div class="modal fade" id="VaxModal" tabindex="-1" aria-labelledby="VaxModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="VaxModalLabel">Insert Vaccines</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form Content Here -->
+                            <form id="VaxForm" action="insertvax.php" method="POST">
+                                <div class="mb-3">
+                                    <label for="vacid" class="form-label">Vaccine ID:</label>
+                                    <input type="text" class="form-control" id="vacid" name="VacID" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="vacname" class="form-label">Vaccine Name:</label>
+                                    <input type="text" class="form-control" id="vacname" name="VaccineName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dosnum" class="form-label">Dosage Number:</label>
+                                    <input type="number" class="form-control" id="dosnum" name="DosageNumber" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="vacsched" class="form-label">Vaccine Schedule:</label>
+                                    <input type="date" class="form-control" id="vacsched" name="VacSchedule" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" form="VaxForm" class="btn btn-primary">Add Vaccine</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- js for modal -->
+            <script>
+                <!-- // Get modal, open button, and close button
+                const modal = document.getElementById('VaxModal');
+                const openModalBtn = document.getElementById('openModalBtn');
+                const closeModalBtn = document.querySelector('.close-btn');
+
+                // Function to open the modal
+                openModalBtn.addEventListener('click', function() {
+                    modal.style.display = 'block';
+                });
+
+                // Function to close the modal
+                closeModalBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+
+                // Close the modal if the user clicks outside the modal content
+                window.addEventListener('click', function(event) {
+                    if (event.target === modal) {
+                    modal.style.display = 'none';
+                    }
+                }); -->
+            </script>
+
+
+            <!-- <section class="vaccine-list-section"> -->
+
+            <div class="vaccine-container">
+
+                <!-- 
+                    <script>
+                    function performSearch() {
+                        const query = document.getElementById('search-input').value;
+                        // Implement search functionality here
+                        console.log('Searching for:', query);
+                    }
+                    </script> -->
+
+                <!-- scrollbar script -->
+
+                <script>
+                    const vaccineContainer = document.querySelector('.vaccine-container');
+
+                    // Show scrollbar on scroll
+                    vaccineContainer.addEventListener('mouseenter', () => {
+                        vaccineContainer.style.overflow = 'auto';  // Show scrollbar on mouse enter
+                    });
+
+                    // Optionally, hide scrollbar after a delay
+                    let hideScrollbarTimeout;
+                    vaccineContainer.addEventListener('scroll', () => {
+                        // Keep the scrollbar visible while scrolling
+                        clearTimeout(hideScrollbarTimeout);
+
+                        // Automatically hide the scrollbar after 1 second of no activity
+                        hideScrollbarTimeout = setTimeout(() => {
+                            vaccineContainer.style.overflow = 'hidden';  // Hide scrollbar after inactivity
+                        }, 1000);
+                    });
+                </script>
+
+
+                <!-- Vaccine list -->
+
+                <!-- <?php
+                $connection = mysqli_connect("localhost", "root", "", "pedia3xv2");
+                $fetch_query = "SELECT * FROM Vaccine";
+                $fetch_query_run = mysqli_query($connection, $fetch_query);
+
+                if(mysqli_num_rows($fetch_query_run) > 0) {
+                  echo '<div class="vaccine-item">';
+
+                 $count= 0;
+                 while($vaccine = mysqli_fetch_array($fetch_query_run))  {
+                  $count++;
+                  ?> -->
+
+                
+                  <div class="vaccine-item">
+                    <div class="vaccine-card" onclick="toggleDescription('vaccine-description_<?php echo $count; ?>')">
+                        <div class="vaccine-icon"></div>
+                        <h2 class="vaccine-name">
+                            <?php echo $vaccine ['VacID'] ?>
+                            <?php echo $vaccine ['VaccineName'] ?>
+                            <?php echo $vaccine ['VacSchedule'] ?>
+                        </h2>
+                    </div>
+                    <div id="vaccine-description_<?php echo $count; ?>" class="vaccine-description">
+                        <h4>
+                            <?php echo $vaccine ['DosageNumber'] ?>
+                        </h4> <br>
+                    </div>
+                </div>
+
+                <div class="vaccine-item">
+                    <div class="vaccine-card" onclick="toggleDescription('vaccine-description_<?php echo $count; ?>')">
+                        <div class="vaccine-icon"></div>
+                        <h2 class="vaccine-name">
+                            <?php echo $vaccine ['VacID'] ?>
+                            <?php echo $vaccine ['VaccineName'] ?>
+                            <?php echo $vaccine ['VacSchedule'] ?>
+                        </h2>
+                    </div>
+                    <div id="vaccine-description_<?php echo $count; ?>" class="vaccine-description">
+                        <h4>
+                            <?php echo $vaccine ['DosageNumber'] ?>
+                        </h4> <br>
+                    </div>
+                </div>
+
+                <div class="vaccine-item">
+                    <div class="vaccine-card" onclick="toggleDescription('vaccine-description_<?php echo $count; ?>')">
+                        <div class="vaccine-icon"></div>
+                        <h2 class="vaccine-name">
+                            <?php echo $vaccine ['VacID'] ?>
+                            <?php echo $vaccine ['VaccineName'] ?>
+                            <?php echo $vaccine ['VacSchedule'] ?>
+                        </h2>
+                    </div>
+                    <div id="vaccine-description_<?php echo $count; ?>" class="vaccine-description">
+                        <h4>
+                            <?php echo $vaccine ['DosageNumber'] ?>
+                        </h4> <br>
+                    </div>
+                </div>
+
+                <div class="vaccine-item">
+                    <div class="vaccine-card" onclick="toggleDescription('vaccine-description_<?php echo $count; ?>')">
+                        <div class="vaccine-icon"></div>
+                        <h2 class="vaccine-name">
+                            <?php echo $vaccine ['VacID'] ?>
+                            <?php echo $vaccine ['VaccineName'] ?>
+                            <?php echo $vaccine ['VacSchedule'] ?>
+                        </h2>
+                    </div>
+                    <div id="vaccine-description_<?php echo $count; ?>" class="vaccine-description">
+                        <h4>
+                            <?php echo $vaccine ['DosageNumber'] ?>
+                        </h4> <br>
+                    </div>
+                </div>
+
+                <div class="vaccine-item">
+                    <div class="vaccine-card" onclick="toggleDescription('vaccine-description_<?php echo $count; ?>')">
+                        <div class="vaccine-icon"></div>
+                        <h2 class="vaccine-name">
+                            <?php echo $vaccine ['VacID'] ?>
+                            <?php echo $vaccine ['VaccineName'] ?>
+                            <?php echo $vaccine ['VacSchedule'] ?>
+                        </h2>
+                    </div>
+                    <div id="vaccine-description_<?php echo $count; ?>" class="vaccine-description">
+                        <h4>
+                            <?php echo $vaccine ['DosageNumber'] ?>
+                        </h4> <br>
+                    </div>
+                </div>
+
+                <div class="vaccine-item">
+                    <div class="vaccine-card" onclick="toggleDescription('vaccine-description_<?php echo $count; ?>')">
+                        <div class="vaccine-icon"></div>
+                        <h2 class="vaccine-name">
+                            <?php echo $vaccine ['VacID'] ?>
+                            <?php echo $vaccine ['VaccineName'] ?>
+                            <?php echo $vaccine ['VacSchedule'] ?>
+                        </h2>
+                    </div>
+                    <div id="vaccine-description_<?php echo $count; ?>" class="vaccine-description">
+                        <h4>
+                            <?php echo $vaccine ['DosageNumber'] ?>
+                        </h4> <br>
+                    </div>
+                </div>
+
+                <div class="vaccine-item">
+                    <div class="vaccine-card" onclick="toggleDescription('vaccine-description_<?php echo $count; ?>')">
+                        <div class="vaccine-icon"></div>
+                        <h2 class="vaccine-name">
+                            <?php echo $vaccine ['VacID'] ?>
+                            <?php echo $vaccine ['VaccineName'] ?>
+                            <?php echo $vaccine ['VacSchedule'] ?>
+                        </h2>
+                    </div>
+                    <div id="vaccine-description_<?php echo $count; ?>" class="vaccine-description">
+                        <h4>
+                            <?php echo $vaccine ['DosageNumber'] ?>
+                        </h4> <br>
+                    </div>
+                </div>
+
+                <div class="vaccine-item">
+                    <div class="vaccine-card" onclick="toggleDescription('vaccine-description_<?php echo $count; ?>')">
+                        <div class="vaccine-icon"></div>
+                        <h2 class="vaccine-name">
+                            <?php echo $vaccine ['VacID'] ?>
+                            <?php echo $vaccine ['VaccineName'] ?>
+                            <?php echo $vaccine ['VacSchedule'] ?>
+                        </h2>
+                    </div>
+                    <div id="vaccine-description_<?php echo $count; ?>" class="vaccine-description">
+                        <h4>
+                            <?php echo $vaccine ['DosageNumber'] ?>
+                        </h4> <br>
+                    </div>
+                </div>
+                <!-- <?php
+                }
+                echo '</li>';
+            } else {
+                echo "No records Found";
+            }
+
+            mysqli_close($connection);
+            ?> -->
+                <ul class="vaccine-list" id="vaccineList">
+                    <li class="vaccine-item">
+
+                    </li>
+
+                    <!-- Add more vaccine items here -->
+                </ul>
+                <!-- </section> -->
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+
+    <script>
+        function toggleDescription(descriptionId) {
+            var descriptionDiv = document.getElementById(descriptionId);
+            if (descriptionDiv.style.display === "none" || descriptionDiv.style.display === "") {
+                descriptionDiv.style.display = "block"; // Show the pop-up
+            } else {
+                descriptionDiv.style.display = "none"; // Hide the pop-up
+            }
+        }
+    </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+<footer>
+    <p style="font-size: small; margin-left: 250px;">Empowering pediatrics, one click with PEDIA3X.</p>>
+
+</footer>
+
+</html>
